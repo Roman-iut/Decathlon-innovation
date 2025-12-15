@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wedze Innovation Community</title>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* --- 1. CONFIGURATION GÉNÉRALE --- */
+        :root {
+            --primary: #003366;
+            --secondary: #A5D8E4;
+            --accent: #FF6B6B;
+            --bg: #F5F9FA;
+            --text: #1A2A33;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 2. STRUCTURE PRINCIPALE --- */
+        #app-frame {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* --- 3. EN-TÊTE --- */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            text-align: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        /* STYLE DU LOGO */
+        .logo {
+            height: 28px;
+            margin-bottom: 12px;
+            filter: brightness(0) invert(1);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 { margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
+        .subtitle { font-size: 13px; color: var(--secondary); margin-top: 5px; opacity: 0.9; }
+
+        /* --- 4. CONTENU RESPONSIVE --- */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px;
+            padding-bottom: 100px;
+            width: 100%;
+            max-width: 800px; 
+            margin: 0 auto;
+        }
+
+        /* --- 5. STYLE DES ÉLÉMENTS --- */
+        .tab-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+
+        h2 { color: var(--primary); font-size: 20px; margin: 0 0 15px 0; }
+        h3 { color: var(--primary); font-size: 18px; margin: 0 0 15px 0; font-weight: 600; }
+
+        .btn {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn:hover { opacity: 0.95; transform: translateY(-1px); }
+
+        label { display: block; font-size: 13px; font-weight: 600; color: var(--primary); margin: 20px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, textarea, select { width: 100%; padding: 14px; background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 12px; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); background: white; }
+
+        .photo-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            border: 2px dashed #A5D8E4;
+            padding: 20px;
+            border-radius: 12px;
+            color: #003366;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 5px;
+        }
+        .photo-btn:hover {
+            background: #F5F9FA;
+            border-color: #003366;
+        }
+        .photo-btn svg { width: 24px; height: 24px; stroke: #003366; }
+
+        .idea-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f0f0f0; }
+        .idea-item:last-child { border-bottom: none; }
+        .tag { font-size: 11px; background-color: var(--secondary); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-weight: bold; display: inline-block; margin-top: 6px; }
+        
+        /* STYLE DU LIKE INTERACTIF */
+        .likes { display: flex; align-items: center; gap: 6px; color: var(--accent); font-weight: bold; font-size: 14px; background: #FFF0F0; padding: 6px 12px; border-radius: 15px; cursor: pointer; transition: transform 0.2s; user-select: none; }
+        .likes:active { transform: scale(0.9); }
+        .likes.liked { background-color: var(--accent); color: white; }
+        .likes.liked svg { fill: white; stroke: white; }
+
+        /* STYLE DES DÉTAILS DÉPLIANTS */
+        .details-content {
+            display: none;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background-color: #eee;
+        }
+
+        .stats-grid { display: flex; gap: 15px; margin-bottom: 20px; }
+        .stat-box { flex: 1; background: rgba(255,255,255,0.15); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.2); }
+        .stat-num { font-size: 28px; font-weight: 800; display: block; margin-bottom: 2px; }
+        .stat-label { font-size: 12px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .progress-container { background-color: #e9ecef; height: 12px; border-radius: 6px; overflow: hidden; margin: 15px 0; }
+        .progress-bar { background: linear-gradient(90deg, #28a745, #34ce57); height: 100%; width: 70%; border-radius: 6px; }
+        .mission-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 15px; color: #444; }
+
+        /* --- 6. MENU DE NAVIGATION --- */
+        nav {
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+            z-index: 10;
+        }
+        
+        .nav-container {
+            display: flex;
+            width: 100%;
+            max-width: 800px;
+            justify-content: space-around;
+        }
+
+        .nav-btn {
+            background: none; border: none; cursor: pointer;
+            text-align: center; color: #9aa5b1; font-size: 11px;
+            flex: 1;
+            transition: color 0.2s;
+            padding: 5px;
+        }
+        .nav-btn.active { color: var(--primary); font-weight: 700; }
+        .nav-btn svg { width: 24px; height: 24px; display: block; margin: 0 auto 5px; stroke-width: 2px; }
+        .nav-btn.active svg { stroke: var(--primary); fill: rgba(0, 51, 102, 0.1); }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-frame">
+        <!-- EN-TÊTE -->
+        <header>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Decathlon_Logo.svg" alt="Decathlon" class="logo">
+            <h1>#WedzeInnovation</h1>
+            <div class="subtitle">La communauté de co-création ❄️</div>
+        </header>
+
+        <!-- CONTENU -->
+        <main>
+            <!-- ONGLET 1: ACCUEIL -->
+            <div id="home" class="tab-content active">
+                <div class="card" style="background: linear-gradient(135deg, #003366 0%, #004d99 100%); color: white;">
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <span class="stat-num">1,240</span>
+                            <span class="stat-label">Idées</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num">850</span>
+                            <span class="stat-label">Membres</span>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="openTab('create')" style="background: white; color: var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        + Proposer une idée
+                    </button>
+                </div>
+
+                <h3>🔥 Top Tendance</h3>
+                <div class="card">
+                    <div class="idea-item">
+                        <div>
+                            <div style="font-weight:600; color:var(--text); font-size: 16px;">Gants Chauffants IA</div>
+                            <span class="tag">Confort</span>
+                        </div>
+                        <div class="likes" onclick="toggleLike(this)"><i data-feather="heart" style="width:16px;"></i> <span class="count">145</span></div>
+                    </div>
+                    <div class="idea-item">
+                        <div>
+                            <div style="font-weight:600; color:var(--text); font-size: 16px;">Ski Pliable Compact</div>
+                            <span class="tag">Glisse</span>
+                        </div>
+                        <div class="likes" onclick="toggleLike(this)"><i data-feather="heart" style="width:16px;"></i> <span class="count">98</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET 2: DÉCOUVRIR -->
+            <div id="discover" class="tab-content">
+                <h2>Le Mur des Idées</h2>
+                
+                <!-- Idée 1 avec Détails -->
+                <div class="card" id="card-1">
+                    <div class="idea-item" style="border:none; padding:0;">
+                        <div style="width: 100%;">
+                            <div style="display:flex; justify-content:space-between; align-items:start;">
+                                <div style="font-weight:700; font-size:16px; color:var(--primary)">Casque Réalité Augmentée</div>
+                                <span class="tag">Sécurité</span>
+                            </div>
+                            <div style="font-size:13px; color:#666; margin:6px 0;">Par Julie M. • Hier</div>
+                            <p style="font-size: 14px; color: #444; margin: 10px 0;">Un casque avec affichage tête haute pour voir sa vitesse et le plan des pistes...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Zone cachée des détails -->
+                    <div id="details-1" class="details-content">
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=800&q=80" alt="Casque Ski" class="product-image">
+                        <p style="font-size:14px; color:#333; line-height:1.5;">
+                            <strong>Le concept en détail :</strong><br>
+                            Ce casque intègre une visière OLED transparente. Connecté au smartphone, il affiche :
+                            <br>• Vitesse en temps réel
+                            <br>• Altitude et météo
+                            <br>• Fléchage GPS sur les pistes
+                            <br><br>
+                            <em>Batterie longue durée résistante au froid (-20°C).</em>
+                        </p>
+                    </div>
+
+                    <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <div class="likes" onclick="toggleLike(this)">
+                            <i data-feather="heart" style="width:16px;"></i> <span class="count">210</span>
+                        </div>
+                        <button onclick="toggleDetails('details-1', this)" style="border:1px solid #ddd; background:none; padding:8px 16px; border-radius:20px; font-size:12px; cursor:pointer; font-weight:600; color:#555;">
+                            Voir détails ▼
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Idée 2 avec Détails -->
+                <div class="card" id="card-2">
+                    <div class="idea-item" style="border:none; padding:0;">
+                        <div style="width: 100%;">
+                            <div style="display:flex; justify-content:space-between; align-items:start;">
+                                <div style="font-weight:700; font-size:16px; color:var(--primary)">Veste Thermo-Régulée</div>
+                                <span class="tag">Textile</span>
+                            </div>
+                            <div style="font-size:13px; color:#666; margin:6px 0;">Par Marc D. • Il y a 2j</div>
+                            <p style="font-size: 14px; color: #444; margin: 10px 0;">Veste qui adapte automatiquement l'isolation selon la température corporelle.</p>
+                        </div>
+                    </div>
+
+                    <!-- Zone cachée des détails -->
+                    <div id="details-2" class="details-content">
+                        <img src="https://images.unsplash.com/photo-1542840843-3349799cded6?auto=format&fit=crop&w=800&q=80" alt="Veste Ski" class="product-image">
+                        <p style="font-size:14px; color:#333; line-height:1.5;">
+                            <strong>Innovation Textile :</strong><br>
+                            Utilisation de fibres intelligentes qui se dilatent pour retenir la chaleur quand vous êtes statique (télésiège) et se contractent pour laisser passer l'air quand vous skiez.<br>
+                            Plus besoin d'ouvrir/fermer sa veste sans arrêt !
+                        </p>
+                    </div>
+
+                    <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <div class="likes" onclick="toggleLike(this)">
+                            <i data-feather="heart" style="width:16px;"></i> <span class="count">180</span>
+                        </div>
+                        <button onclick="toggleDetails('details-2', this)" style="border:1px solid #ddd; background:none; padding:8px 16px; border-radius:20px; font-size:12px; cursor:pointer; font-weight:600; color:#555;">
+                            Voir détails ▼
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET 3: CRÉER -->
+            <div id="create" class="tab-content">
+                <h2>Nouvelle Innovation</h2>
+                <div class="card">
+                    <label>Titre du projet</label>
+                    <input type="text" placeholder="Ex: Fixations magnétiques...">
+
+                    <label>Catégorie</label>
+                    <select>
+                        <option>Sécurité</option>
+                        <option>Glisse</option>
+                        <option>Confort</option>
+                        <option>Accessoire</option>
+                    </select>
+
+                    <label>Description</label>
+                    <textarea rows="5" placeholder="Détaillez votre concept..."></textarea>
+                    
+                    <label>Image ou Croquis</label>
+                    <input type="file" id="photo-upload" accept="image/*" style="display: none;" onchange="updatePhotoText(this)">
+                    <label for="photo-upload" class="photo-btn">
+                        <i data-feather="camera"></i>
+                        <span id="photo-text">Ajouter une photo</span>
+                    </label>
+
+                    <label>Lien Vidéo TikTok (Challenge)</label>
+                    <input type="text" placeholder="https://tiktok.com/@...">
+
+                    <button class="btn" onclick="alert('Votre idée a bien été envoyée ! 🚀')">
+                        PUBLIER L'IDÉE
+                    </button>
+                </div>
+            </div>
+
+            <!-- ONGLET 4: PROFIL -->
+            <div id="profile" class="tab-content">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #A5D8E4, #ffffff); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">🏔️</div>
+                    <h2 style="margin-bottom:8px;">Alexandre Wedze</h2>
+                    <span style="color: var(--accent); font-weight: bold; background: #FFF0F0; padding: 6px 14px; border-radius: 20px; font-size:13px;">Niveau: Ambassadeur</span>
+                </div>
+
+                <div class="card">
+                    <h3 style="display:flex; justify-content:space-between;">
+                        Engagement
+                        <span style="color:var(--accent)">450 pts</span>
+                    </h3>
+                    <div class="progress-container"><div class="progress-bar"></div></div>
+                    <p style="text-align: right; font-size: 12px; color: gray; margin-top:5px;">Plus que 50 pts pour le niveau Expert</p>
+                </div>
+
+                <div class="card">
+                    <h3>Missions Challenge 2025</h3>
+                    <div class="mission-item">
+                        <i data-feather="check-circle" style="color:#28a745; width:20px;"></i> Compte TikTok relié
+                    </div>
+                    <div class="mission-item">
+                        <i data-feather="check-circle" style="color:#28a745; width:20px;"></i> 1ère idée postée
+                    </div>
+                    <div class="mission-item">
+                        <i data-feather="circle" style="color:#ccc; width:20px;"></i> Vidéo challenge postée
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- NAVIGATION -->
+        <nav>
+            <div class="nav-container">
+                <button class="nav-btn active" onclick="openTab('home')">
+                    <i data-feather="home"></i> Accueil
+                </button>
+                <button class="nav-btn" onclick="openTab('discover')">
+                    <i data-feather="compass"></i> Découvrir
+                </button>
+                <button class="nav-btn" onclick="openTab('create')">
+                    <i data-feather="plus-circle"></i> Créer
+                </button>
+                <button class="nav-btn" onclick="openTab('profile')">
+                    <i data-feather="user"></i> Profil
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        feather.replace();
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            const btns = document.querySelectorAll('.nav-btn');
+            if(tabName === 'home') btns[0].classList.add('active');
+            if(tabName === 'discover') btns[1].classList.add('active');
+            if(tabName === 'create') btns[2].classList.add('active');
+            if(tabName === 'profile') btns[3].classList.add('active');
+            document.querySelector('main').scrollTop = 0;
+        }
+
+        function updatePhotoText(input) {
+            if (input.files && input.files[0]) {
+                const btn = document.querySelector('.photo-btn');
+                const text = document.getElementById('photo-text');
+                text.textContent = "📸 " + input.files[0].name;
+                btn.style.borderColor = "#28a745";
+                btn.style.color = "#28a745";
+                btn.style.background = "#f0fff4";
+            }
+        }
+
+        // Fonction pour afficher/masquer les détails
+        function toggleDetails(id, btn) {
+            const details = document.getElementById(id);
+            if (details.style.display === "block") {
+                details.style.display = "none";
+                btn.textContent = "Voir détails ▼";
+            } else {
+                details.style.display = "block";
+                btn.textContent = "Masquer ▲";
+            }
+        }
+
+        // Fonction pour gérer les likes de façon réaliste
+        function toggleLike(element) {
+            const countSpan = element.querySelector('.count');
+            let count = parseInt(countSpan.textContent);
+            
+            // Si déjà liké
+            if (element.classList.contains('liked')) {
+                element.classList.remove('liked');
+                count--;
+            } else {
+                // Si pas encore liké
+                element.classList.add('liked');
+                count++;
+            }
+            
+            countSpan.textContent = count;
+            
+            // Petit effet visuel
+            element.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                element.style.transform = "scale(1)";
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
