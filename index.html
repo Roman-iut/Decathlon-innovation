@@ -173,7 +173,12 @@
         .progress-bar { background: linear-gradient(90deg, #28a745, #34ce57); height: 100%; width: 70%; border-radius: 6px; }
         .mission-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 15px; color: #444; }
 
+        /* --- 6. MENU DE NAVIGATION --- */
         nav {
+            position: fixed; /* FIX: Menu fixé en bas de l'écran */
+            bottom: 0;
+            left: 0;
+            width: 100%;
             background: white;
             border-top: 1px solid rgba(0,0,0,0.05);
             display: flex;
@@ -181,7 +186,7 @@
             padding: 10px 0;
             padding-bottom: max(10px, env(safe-area-inset-bottom));
             box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
-            z-index: 10;
+            z-index: 1000; /* Assure que le menu est au-dessus du reste */
         }
         
         .nav-container {
@@ -211,7 +216,7 @@
         <header>
             <!-- Logo texte en gras (remplace l'icône/image) -->
             <div class="logo-text">DECATHLON</div>
-            <h1>#WedzeInnovation2026</h1>
+            <h1>#SkiInnovation</h1>
             <div class="subtitle">La communauté de co-création ❄️</div>
         </header>
 
@@ -469,4 +474,3 @@
 
 </body>
 </html>
-
