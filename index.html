@@ -185,6 +185,56 @@
         .progress-bar { background: linear-gradient(90deg, #28a745, #34ce57); height: 100%; width: 70%; border-radius: 6px; }
         .mission-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 15px; color: #444; }
 
+        /* --- STYLES COMMENTAIRES --- */
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        .comments-section h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .comment-list {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .comment {
+            font-size: 13px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            color: #333;
+        }
+        .comment strong { color: var(--primary); font-weight: 700; margin-right: 5px; }
+        .comment-input-area {
+            display: flex;
+            gap: 8px;
+        }
+        .comment-input-area input {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            flex: 1;
+            margin: 0; /* Override generic margin */
+        }
+        .comment-input-area button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+            box-shadow: none;
+        }
+
         /* --- 6. MENU DE NAVIGATION --- */
         nav {
             position: fixed; /* FIX: Menu fixé en bas de l'écran */
@@ -300,6 +350,19 @@
                             <br>• Altitude et météo
                             <br>• Fléchage GPS sur les pistes
                         </p>
+
+                        <!-- SECTION COMMENTAIRES -->
+                        <div class="comments-section">
+                            <h4>💬 Commentaires (2)</h4>
+                            <div class="comment-list" id="list-1">
+                                <div class="comment"><strong>Thomas:</strong> Incroyable pour la sécurité !</div>
+                                <div class="comment"><strong>Sophie:</strong> Est-ce compatible avec les lunettes de vue ?</div>
+                            </div>
+                            <div class="comment-input-area">
+                                <input type="text" id="input-1" placeholder="Écrire un commentaire...">
+                                <button onclick="addComment('1')">Envoyer</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -332,6 +395,18 @@
                             <strong>Innovation Textile :</strong><br>
                             Utilisation de fibres intelligentes qui se dilatent pour retenir la chaleur quand vous êtes statique.
                         </p>
+
+                        <!-- SECTION COMMENTAIRES -->
+                        <div class="comments-section">
+                            <h4>💬 Commentaires (1)</h4>
+                            <div class="comment-list" id="list-2">
+                                <div class="comment"><strong>Paul:</strong> Super idée, marre d'avoir froid sur le télésiège !</div>
+                            </div>
+                            <div class="comment-input-area">
+                                <input type="text" id="input-2" placeholder="Écrire un commentaire...">
+                                <button onclick="addComment('2')">Envoyer</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
@@ -430,7 +505,7 @@
                         <i data-feather="check-circle" style="color:#28a745; width:20px;"></i> 1ère idée postée
                     </div>
                     <div class="mission-item">
-                        <i data-feather="check-circle" style="color:#ccc; width:20px;"></i> Vidéo challenge postée
+                        <i data-feather="circle" style="color:#ccc; width:20px;"></i> Vidéo challenge postée
                     </div>
                 </div>
             </div>
@@ -509,8 +584,25 @@
             element.style.transform = "scale(1.2)";
             setTimeout(() => { element.style.transform = "scale(1)"; }, 200);
         }
+
+        // Fonction pour ajouter un commentaire
+        function addComment(id) {
+            const input = document.getElementById('input-' + id);
+            const list = document.getElementById('list-' + id);
+            const text = input.value.trim();
+            
+            if (text) {
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                // On simule l'utilisateur connecté ("Moi")
+                newComment.innerHTML = `<strong>Moi:</strong> ${text}`;
+                list.appendChild(newComment);
+                input.value = ''; // Vider le champ
+                // Scroll automatique vers le bas pour voir le nouveau commentaire
+                list.scrollTop = list.scrollHeight;
+            }
+        }
     </script>
 
 </body>
 </html>
-
