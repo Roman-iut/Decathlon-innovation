@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wedze Innovation Community</title>
+    <!-- TITRE NEUTRE -->
+    <title>Ski Innovation Community</title>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         /* --- 1. CONFIGURATION GÉNÉRALE --- */
@@ -49,17 +50,17 @@
             z-index: 10;
         }
         
-        /* STYLE DU LOGO */
-        .logo {
-            height: 28px;
-            margin-bottom: 12px;
-            filter: brightness(0) invert(1);
+        /* LOGO TEXTE (REMPLACEMENT) */
+        .logo-text {
+            font-weight: 900; 
+            font-size: 26px; 
+            letter-spacing: 2px; 
+            margin-bottom: 5px;
             display: block;
-            margin-left: auto;
-            margin-right: auto;
+            text-transform: uppercase;
         }
 
-        h1 { margin: 0; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
+        h1 { margin: 0; font-size: 18px; font-weight: normal; letter-spacing: 0.5px; opacity: 0.9; }
         .subtitle { font-size: 13px; color: var(--secondary); margin-top: 5px; opacity: 0.9; }
 
         /* --- 4. CONTENU RESPONSIVE --- */
@@ -70,7 +71,7 @@
             padding: 20px;
             padding-bottom: 100px;
             width: 100%;
-            max-width: 800px; 
+            max-width: 1000px; 
             margin: 0 auto;
         }
 
@@ -138,13 +139,11 @@
         .idea-item:last-child { border-bottom: none; }
         .tag { font-size: 11px; background-color: var(--secondary); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-weight: bold; display: inline-block; margin-top: 6px; }
         
-        /* STYLE DU LIKE INTERACTIF */
         .likes { display: flex; align-items: center; gap: 6px; color: var(--accent); font-weight: bold; font-size: 14px; background: #FFF0F0; padding: 6px 12px; border-radius: 15px; cursor: pointer; transition: transform 0.2s; user-select: none; }
         .likes:active { transform: scale(0.9); }
         .likes.liked { background-color: var(--accent); color: white; }
         .likes.liked svg { fill: white; stroke: white; }
 
-        /* STYLE DES DÉTAILS DÉPLIANTS */
         .details-content {
             display: none;
             margin-top: 15px;
@@ -154,12 +153,15 @@
         }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* STYLE IMAGE MODIFIÉ POUR ÊTRE PLUS GRAND ET ENTIER */
         .product-image {
             width: 100%;
-            object-fit: cover;
+            height: auto; /* Hauteur automatique pour voir toute l'image */
+            min-height: 250px; /* Une bonne taille minimale */
+            object-fit: contain; /* Assure que l'image n'est pas coupée */
             border-radius: 12px;
             margin-bottom: 15px;
-            background-color: #eee;
+            background-color: #f8f9fa; /* Fond clair si l'image ne remplit pas tout le cadre */
         }
 
         .stats-grid { display: flex; gap: 15px; margin-bottom: 20px; }
@@ -171,7 +173,6 @@
         .progress-bar { background: linear-gradient(90deg, #28a745, #34ce57); height: 100%; width: 70%; border-radius: 6px; }
         .mission-item { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-size: 15px; color: #444; }
 
-        /* --- 6. MENU DE NAVIGATION --- */
         nav {
             background: white;
             border-top: 1px solid rgba(0,0,0,0.05);
@@ -186,7 +187,7 @@
         .nav-container {
             display: flex;
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             justify-content: space-around;
         }
 
@@ -208,8 +209,9 @@
     <div id="app-frame">
         <!-- EN-TÊTE -->
         <header>
-            <img src="" alt="Decathlon" class="logo">
-            <h1>#WedzeInnovation</h1>
+            <!-- Logo texte en gras (remplace l'icône/image) -->
+            <div class="logo-text">DECATHLON</div>
+            <h1>#SkiInnovation</h1>
             <div class="subtitle">La communauté de co-création ❄️</div>
         </header>
 
@@ -256,7 +258,7 @@
             <div id="discover" class="tab-content">
                 <h2>Le Mur des Idées</h2>
                 
-                <!-- Idée 1 avec Détails -->
+                <!-- Idée 1 -->
                 <div class="card" id="card-1">
                     <div class="idea-item" style="border:none; padding:0;">
                         <div style="width: 100%;">
@@ -269,8 +271,8 @@
                         </div>
                     </div>
                     
-                    <!-- Zone cachée des détails -->
                     <div id="details-1" class="details-content">
+                        <!-- Image plus grande et non coupée -->
                         <img src="https://images.frandroid.com/wp-content/uploads/2015/01/rideon-indigogo-2.jpg" alt="Casque Ski" class="product-image">
                         <p style="font-size:14px; color:#333; line-height:1.5;">
                             <strong>Le concept en détail :</strong><br>
@@ -278,8 +280,6 @@
                             <br>• Vitesse en temps réel
                             <br>• Altitude et météo
                             <br>• Fléchage GPS sur les pistes
-                            <br><br>
-                            <em>Batterie longue durée résistante au froid (-20°C).</em>
                         </p>
                     </div>
 
@@ -293,7 +293,7 @@
                     </div>
                 </div>
 
-                <!-- Idée 2 avec Détails -->
+                <!-- Idée 2 -->
                 <div class="card" id="card-2">
                     <div class="idea-item" style="border:none; padding:0;">
                         <div style="width: 100%;">
@@ -306,13 +306,12 @@
                         </div>
                     </div>
 
-                    <!-- Zone cachée des détails -->
                     <div id="details-2" class="details-content">
+                        <!-- Image plus grande et non coupée -->
                         <img src="https://www.chullanka.com/media/image/f8/e9/beeb2f1b492dbbfcf011831e70b0.png" alt="Veste Ski" class="product-image">
                         <p style="font-size:14px; color:#333; line-height:1.5;">
                             <strong>Innovation Textile :</strong><br>
-                            Utilisation de fibres intelligentes qui se dilatent pour retenir la chaleur quand vous êtes statique (télésiège) et se contractent pour laisser passer l'air quand vous skiez.<br>
-                            Plus besoin d'ouvrir/fermer sa veste sans arrêt !
+                            Utilisation de fibres intelligentes qui se dilatent pour retenir la chaleur quand vous êtes statique.
                         </p>
                     </div>
 
@@ -365,7 +364,7 @@
             <div id="profile" class="tab-content">
                 <div style="text-align: center; margin-bottom: 25px;">
                     <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #A5D8E4, #ffffff); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">🏔️</div>
-                    <h2 style="margin-bottom:8px;">Alexandre Wedze</h2>
+                    <h2 style="margin-bottom:8px;">Alexandre Ski</h2>
                     <span style="color: var(--accent); font-weight: bold; background: #FFF0F0; padding: 6px 14px; border-radius: 20px; font-size:13px;">Niveau: Ambassadeur</span>
                 </div>
 
@@ -391,6 +390,8 @@
                     </div>
                 </div>
             </div>
+            
+            <div style="text-align:center; color:#ccc; font-size:10px; margin-top:20px;">Version Neutre (Anti-Blocage)</div>
 
         </main>
 
@@ -439,7 +440,6 @@
             }
         }
 
-        // Fonction pour afficher/masquer les détails
         function toggleDetails(id, btn) {
             const details = document.getElementById(id);
             if (details.style.display === "block") {
@@ -451,33 +451,21 @@
             }
         }
 
-        // Fonction pour gérer les likes de façon réaliste
         function toggleLike(element) {
             const countSpan = element.querySelector('.count');
             let count = parseInt(countSpan.textContent);
-            
-            // Si déjà liké
             if (element.classList.contains('liked')) {
                 element.classList.remove('liked');
                 count--;
             } else {
-                // Si pas encore liké
                 element.classList.add('liked');
                 count++;
             }
-            
             countSpan.textContent = count;
-            
-            // Petit effet visuel
             element.style.transform = "scale(1.2)";
-            setTimeout(() => {
-                element.style.transform = "scale(1)";
-            }, 200);
+            setTimeout(() => { element.style.transform = "scale(1)"; }, 200);
         }
     </script>
 
 </body>
 </html>
-
-
-
